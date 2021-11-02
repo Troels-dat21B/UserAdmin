@@ -52,7 +52,7 @@ public class Main {
             }
         }
     }
-    public void createNewUser(){
+    public void createNewUser(){//TODO Lav så den dynamisk ved hvilket ID nummer brugeren skal have
         Scanner scanner = new Scanner(System.in);
         System.out.println("Type an ID number");
         int id = 0;
@@ -92,16 +92,22 @@ public class Main {
     public void deleteUser(){
         Scanner scanner = new Scanner(System.in);
         System.out.println("Type ID number for the user you wish to delete");
+        for (int i = 0; i < users.size(); i++) {
+            System.out.println("ID: " + users.get(i).getId() + "User: " + users.get(i).getName());
+        }
         int id = Integer.parseInt(scanner.nextLine());
+
         for (int i = 0; i < users.size(); i++) {
             if(users.get(i).getId() == id){
                 users.remove(i);
+                System.out.println("User removed!");
+            }else{
+                System.out.println("User not found!");
             }
         }
-        System.out.println("User removed!");
     }
 
-    public void safeFile(){
+    public void safeFile(){//TODO Tjekke om man kan tilføje til filen når man loader den før, man tilføjer. Noget i den stil
         try{
             PrintStream writer = new PrintStream(FILENAME);
             for (int i = 0; i < users.size(); i++) {
