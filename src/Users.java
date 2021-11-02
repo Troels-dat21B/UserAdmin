@@ -1,13 +1,7 @@
-import java.util.ArrayList;
-import java.util.Scanner;
-
 public class Users {
     private int id;
     private String name;
     private String password;
-
-    public Users() {
-    }
 
     public Users(int id) {
 

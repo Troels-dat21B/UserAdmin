@@ -55,10 +55,17 @@ public class Main {
     public void createNewUser(){
         Scanner scanner = new Scanner(System.in);
         System.out.println("Type an ID number");
-        int id = Integer.parseInt(scanner.nextLine());
+        int id = 0;
+        try{
+            id = Integer.parseInt(scanner.nextLine());
+
+        }catch (NumberFormatException e){
+            System.out.println("That was not a number!");
+            return;
+        }
 
         if(id <= 0){
-            System.out.println("ID number has to be positive");
+            System.out.println("ID number has to be positive and above 0");
             createNewUser();
         }else{
             System.out.println("Type user name");
@@ -72,7 +79,7 @@ public class Main {
 
     }
 
-    public void viewUserList(){
+    public void viewUserList(){ //TODO Lav failsafe hvis to ID er ens (Tænker en ++ funktion like if id == id set new id ++ -ish)
         if(users.size() == 0){
             System.out.println("No user exist");
         }else{
