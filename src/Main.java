@@ -52,7 +52,7 @@ public class Main {
             }
         }
     }
-    public void createNewUser(){//TODO Lav så den dynamisk ved hvilket ID nummer brugeren skal have
+    public void createNewUser(){
         Scanner scanner = new Scanner(System.in);
         System.out.println("Type an ID number");
         int id = 0;
@@ -74,8 +74,8 @@ public class Main {
             System.out.println("Make a password");
             String password = scanner.nextLine();
             users.add(new Users(id, name, password));
+            System.out.println("User added! :)");
         }
-
 
     }
 
