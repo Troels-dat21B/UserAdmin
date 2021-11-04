@@ -6,11 +6,11 @@ public class Main {
     static String FILENAME = "user.txt";
     Menu menu = new Menu("MENU:", "Please choose option",
             new String[]{"1. View user list",
-                         "2. Create new user",
-                         "3. Delete user",
-                         "4. Save current users to file",
-                         "5. Load users from file",
-                         "9. Quit"});
+                    "2. Create new user",
+                    "3. Delete user",
+                    "4. Save current users to file",
+                    "5. Load users from file",
+                    "9. Quit"});
     ArrayList<Users> users = new ArrayList<>();
     boolean running = true;
 
@@ -20,11 +20,11 @@ public class Main {
         main.run();
     }
 
-    public void run(){
-        while(running){
+    public void run() {
+        while (running) {
             menu.printMenu();
 
-            switch (menu.readChoice()){
+            switch (menu.readChoice()) {
                 case 1:
                     viewUserList();
                     break;
@@ -42,103 +42,130 @@ public class Main {
                 case 5:
                     readFile();
                     break;
+
                 case 9:
                     System.out.println("Bye!");
                     running = false;
                     break;
+
                 default:
-                    System.out.println("Not a valid input");
+                    System.out.println("Not a valid input!\n");
 
             }
         }
     }
-    public void createNewUser(){
+
+    public void createNewUser() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Type an ID number");
         int id = 0;
-        try{
+
+        System.out.println("Type an ID number");
+        try {
             id = Integer.parseInt(scanner.nextLine());
 
-        }catch (NumberFormatException e){
-            System.out.println("That was not a number!");
+        } catch (NumberFormatException e) {
+            System.out.println("That was not a number!\n");
             return;
         }
 
-        if(id <= 0){
-            System.out.println("ID number has to be positive and above 0");
+        if (id <= 0) {
+            System.out.println("ID number has to be positive and above 0\n");
             createNewUser();
-        }else{
+        } else {
             System.out.println("Type user name");
             String name = scanner.nextLine();
 
             System.out.println("Make a password");
             String password = scanner.nextLine();
             users.add(new Users(id, name, password));
-            System.out.println("User added! :)");
+            System.out.println("User added! :)\n");
         }
-
     }
 
-    public void viewUserList(){ //TODO Lav failsafe hvis to ID er ens (Tænker en ++ funktion like if id == id set new id ++ -ish)
-        if(users.size() == 0){
-            System.out.println("No user exist");
-        }else{
+    public void viewUserList() {
+        if (users.size() == 0) {
+            System.out.println("No user exist\n");
+        } else {
+
             for (int i = 0; i < users.size(); i++) {
                 System.out.println(users.get(i));
             }
+            System.out.println("");
         }
     }
 
-    public void deleteUser(){
+    public void deleteUser() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Type ID number for the user you wish to delete");
-        for (int i = 0; i < users.size(); i++) {
-            System.out.println("ID: " + users.get(i).getId() + "User: " + users.get(i).getName());
+
+        if(users.size() == 0){
+            System.out.println("No users on file!\n");
+            return;
+        }else{
+            System.out.println("Type ID number for the user you wish to delete\n");
+            for (int i = 0; i < users.size(); i++) {
+                System.out.println("ID: " + users.get(i).getId() + " User: " + users.get(i).getName());
+            }
         }
         int id = Integer.parseInt(scanner.nextLine());
 
         for (int i = 0; i < users.size(); i++) {
-            if(users.get(i).getId() == id){
+            if (users.get(i).getId() == id) {
                 users.remove(i);
-                System.out.println("User removed!");
-            }else{
-                System.out.println("User not found!");
+                System.out.println("User removed!\n");
+                return;
             }
         }
+        System.out.println("No user found!\n");
     }
 
-    public void safeFile(){//TODO Tjekke om man kan tilføje til filen når man loader den før, man tilføjer. Noget i den stil
-        try{
+    public void safeFile() {
+        try {
             PrintStream writer = new PrintStream(FILENAME);
             for (int i = 0; i < users.size(); i++) {
-                if(users.get(i) != null){
-                    writer.println(("ID: " + users.get(i).getId()));
-                    writer.println("Name: " + users.get(i).getName());
-                    writer.println(("Password: " + users.get(i).getPassword()));
-                }else{
+                if (users.get(i) != null) {
+                    writer.append("ID: ").append(String.valueOf(users.get(i).getId()));
+                    writer.println();
+                    writer.append("Name: ").append(users.get(i).getName());
+                    writer.println();
+                    writer.append("Password: ").append(users.get(i).getPassword());
+                    writer.println();
+                } else {
                     System.out.println("No user on file.");
                 }
-                System.out.println("User added!");
             }
             writer.close();
-        }catch (IOException e){
+            System.out.println("File updated!\n");
+        } catch (IOException e) {
             System.out.println("An error occurred.");
         }
     }
 
-    public void readFile(){
-        try{
+    public void readFile() {
+        int id = 0;
+        String name = "";
+        String password = "";
+        try {
             File user = new File(FILENAME);
             Scanner reader = new Scanner(user);
-            while (reader.hasNextLine()){
+            while (reader.hasNextLine()) {
                 String data = reader.nextLine();
-                System.out.println(data);
+                //System.out.println(data);
+                if (data.contains("ID:") || data.contains("Id:") || data.contains("id:")) {
+                    id = Integer.parseInt(data.substring(4));
+                } else if (data.contains("name:") || data.contains("Name:")) {
+                    name = data.substring(6);
+                } else if (data.contains("password:") || data.contains("Password:")) {
+                    password = data.substring(10);
+                }
+                if (id != 0 && !name.equals("") && !password.equals("")) {
+                    users.add(new Users(id, name, password));
+                    name = "";
+                    password = "";
+                }
             }
-        }catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             System.out.println("Couldn't find a file.");
         }
+        System.out.println("File has been loaded and added to User list!\n");
     }
-
-
-
 }

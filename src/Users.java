@@ -6,6 +6,12 @@ public class Users {
     public Users(int id) {
 
     }
+    public Users(String name, String password) {
+        id = id + 1;
+        this.name = name;
+        this.password = password;
+
+    }
 
     public Users(int id, String name, String password) {
         this.id = id;
