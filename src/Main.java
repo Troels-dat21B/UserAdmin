@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-    static String FILENAME = "user.txt";
+    static String FILENAME = "users.txt";
     Menu menu = new Menu("MENU:", "Please choose option",
             new String[]{"1. View user list",
                     "2. Create new user",
