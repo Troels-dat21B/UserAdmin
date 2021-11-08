@@ -25,39 +25,27 @@ public class Main {
             menu.printMenu();
 
             switch (menu.readChoice()) {
-                case 1:
-                    viewUserList();
-                    break;
-                case 2:
-                    //Create user
-                    createNewUser();
-                    break;
-                case 3:
-                    //Delete user
-                    deleteUser();
-                    break;
-                case 4:
-                    safeFile();
-                    break;
-                case 5:
-                    readFile();
-                    break;
-
-                case 9:
+                case 1 -> viewUserList();
+                case 2 ->
+                        //Create user
+                        createNewUser();
+                case 3 ->
+                        //Delete user
+                        deleteUser();
+                case 4 -> safeFile();
+                case 5 -> readFile();
+                case 9 -> {
                     System.out.println("Bye!");
                     running = false;
-                    break;
-
-                default:
-                    System.out.println("Not a valid input!\n");
-
+                }
+                default -> System.out.println("Not a valid input!\n");
             }
         }
     }
 
     public void createNewUser() {
         Scanner scanner = new Scanner(System.in);
-        int id = 0;
+        int id;
 
         System.out.println("Type an ID number");
         try {
@@ -87,10 +75,10 @@ public class Main {
             System.out.println("No user exist\n");
         } else {
 
-            for (int i = 0; i < users.size(); i++) {
-                System.out.println(users.get(i));
+            for (Users user : users) {
+                System.out.println(user);
             }
-            System.out.println("");
+            System.out.println(" ");
         }
     }
 
@@ -102,8 +90,8 @@ public class Main {
             return;
         }else{
             System.out.println("Type ID number for the user you wish to delete\n");
-            for (int i = 0; i < users.size(); i++) {
-                System.out.println("ID: " + users.get(i).getId() + " User: " + users.get(i).getName());
+            for (Users user : users) {
+                System.out.println("ID: " + user.getId() + " User: " + user.getName());
             }
         }
         int id = Integer.parseInt(scanner.nextLine());
@@ -121,13 +109,13 @@ public class Main {
     public void safeFile() {
         try {
             PrintStream writer = new PrintStream(FILENAME);
-            for (int i = 0; i < users.size(); i++) {
-                if (users.get(i) != null) {
-                    writer.append("ID: ").append(String.valueOf(users.get(i).getId()));
+            for (Users user : users) {
+                if (user != null) {
+                    writer.append("ID: ").append(String.valueOf(user.getId()));
                     writer.println();
-                    writer.append("Name: ").append(users.get(i).getName());
+                    writer.append("Name: ").append(user.getName());
                     writer.println();
-                    writer.append("Password: ").append(users.get(i).getPassword());
+                    writer.append("Password: ").append(user.getPassword());
                     writer.println();
                 } else {
                     System.out.println("No user on file.");
